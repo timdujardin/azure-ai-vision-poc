@@ -1,0 +1,93 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+import createImageAnalysisClient, {
+  DenseCaptionOutput,
+  ImageAnalysisClient,
+  DetectedPersonOutput,
+  DetectedTextBlockOutput,
+  DetectedObjectOutput,
+  CropRegionOutput,
+  DetectedTagOutput,
+  isUnexpected,
+} from "@azure-rest/ai-vision-image-analysis";
+import { AzureKeyCredential } from "@azure/core-auth";
+// Load the .env file if it exists
+import * as dotenv from "dotenv";
+dotenv.config({ path: "../.env" });
+
+const endpoint: string = process.env["VISION_ENDPOINT"] || "<your_endpoint>";
+const key: string = process.env["VISION_KEY"] || "<your_key>";
+const credential = new AzureKeyCredential(key);
+
+const client: ImageAnalysisClient = createImageAnalysisClient(
+  endpoint,
+  credential
+);
+
+const features: string[] = [
+  "Caption",
+  "DenseCaptions",
+  "Objects",
+  "People",
+  "Read",
+  "SmartCrops",
+  "Tags",
+];
+
+// iO - iodigital.com: https://assets.iodigital.com/f/119964/1200x1200/bd99aab87b/1.png/m/800x800
+// Toyota Used Car:
+// https://used-car-publisher.toyota-europe.com/images/cf8306a2-ffb4-485d-b0a9-eebded8ff0ee_a0670dbbd8c4b7d91bfbb6d3c58415bc.JPG
+// SupraBazar: https://cdn.suprabazar.be/media/4a/fd/29/1718265877/Verticaal.jpg
+const imageUrl: string =
+  "https://used-car-publisher.toyota-europe.com/images/cf8306a2-ffb4-485d-b0a9-eebded8ff0ee_a0670dbbd8c4b7d91bfbb6d3c58415bc.JPG";
+
+async function analyzeImageFromUrl(): Promise<void> {
+  const result = await client.path("/imageanalysis:analyze").post({
+    body: {
+      url: imageUrl,
+    },
+    queryParameters: {
+      features: features,
+    },
+    contentType: "application/json",
+  });
+
+  if (isUnexpected(result)) {
+    throw result.body.error;
+  }
+
+  console.log(`Model Version: ${result.body.modelVersion}`);
+  console.log(`Image Metadata: ${JSON.stringify(result.body.metadata)}`);
+  if (result.body.captionResult)
+    console.log(
+      `Caption: ${result.body.captionResult.text} (confidence: ${result.body.captionResult.confidence})`
+    );
+  if (result.body.denseCaptionsResult)
+    result.body.denseCaptionsResult.values.forEach(
+      (denseCaption: DenseCaptionOutput) =>
+        console.log(`Dense Caption: ${JSON.stringify(denseCaption)}`)
+    );
+  if (result.body.objectsResult)
+    result.body.objectsResult.values.forEach((object: DetectedObjectOutput) =>
+      console.log(`Object: ${JSON.stringify(object)}`)
+    );
+  if (result.body.peopleResult)
+    result.body.peopleResult.values.forEach((person: DetectedPersonOutput) =>
+      console.log(`Person: ${JSON.stringify(person)}`)
+    );
+  if (result.body.readResult)
+    result.body.readResult.blocks.forEach((block: DetectedTextBlockOutput) =>
+      console.log(`Text Block: ${JSON.stringify(block)}`)
+    );
+  if (result.body.smartCropsResult)
+    result.body.smartCropsResult.values.forEach((smartCrop: CropRegionOutput) =>
+      console.log(`Smart Crop: ${JSON.stringify(smartCrop)}`)
+    );
+  if (result.body.tagsResult)
+    result.body.tagsResult.values.forEach((tag: DetectedTagOutput) =>
+      console.log(`Tag: ${JSON.stringify(tag)}`)
+    );
+}
+
+analyzeImageFromUrl();

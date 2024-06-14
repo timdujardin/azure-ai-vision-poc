@@ -4,12 +4,17 @@
   "description": "Image Analysis through Azure AI Vision API: Image Analysis.",
   "main": "index.js",
   "scripts": {
-    "analyse": "node index.js"
+    "build": "tsc",
+    "analyse": "node dist/index.js"
   },
   "author": "Tim Dujardin",
   "license": "ISC",
   "dependencies": {
     "@azure-rest/ai-vision-image-analysis": "^1.0.0-beta.2",
     "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5"
   }
 }

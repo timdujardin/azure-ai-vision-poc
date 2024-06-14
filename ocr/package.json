@@ -4,7 +4,8 @@
   "description": "Optical Character Recognition (OCR) through Azure AI Vision API: GA Read.",
   "main": "index.js",
   "scripts": {
-    "ocr": "node index.js"
+    "build": "tsc",
+    "ocr": "node dist/index.js"
   },
   "author": "Tim Dujardin",
   "license": "ISC",
@@ -13,5 +14,10 @@
     "async": "^3.2.5",
     "dotenv": "^16.4.5",
     "ms-rest-azure": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/async": "^3.2.24",
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5"
   }
 }

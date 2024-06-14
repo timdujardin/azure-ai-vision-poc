@@ -1,24 +1,19 @@
-"use strict";
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
-const async = require("async");
-const fs = require("fs");
-const https = require("https");
-const path = require("path");
-const createReadStream = require("fs").createReadStream;
+import { ComputerVisionClient } from "@azure/cognitiveservices-computervision";
+import { ApiKeyCredentials } from "@azure/ms-rest-js";
+import fs from "fs";
+import async from "async";
+import https from "https";
+import * as dotenv from "dotenv";
+
 const sleep = require("util").promisify(setTimeout);
-const ComputerVisionClient =
-  require("@azure/cognitiveservices-computervision").ComputerVisionClient;
-const ApiKeyCredentials = require("@azure/ms-rest-js").ApiKeyCredentials;
 
-// Load the .env file if it exists
-require("dotenv").config({ path: "../.env" });
+dotenv.config({ path: "../.env" });
 
-/**
- * AUTHENTICATE
- * This single client is used for all examples.
- */
-const key = process.env.VISION_KEY;
-const endpoint = process.env.VISION_ENDPOINT;
+const endpoint: string = process.env["VISION_ENDPOINT"] || "<your_endpoint>";
+const key: string = process.env["VISION_KEY"] || "<your_key>";
 
 const computerVisionClient = new ComputerVisionClient(
   new ApiKeyCredentials({ inHeader: { "Ocp-Apim-Subscription-Key": key } }),
@@ -42,8 +37,10 @@ function computerVision() {
 
         // URL images containing printed and/or handwritten text.
         // The URL can point to image files (.jpg/.png/.bmp) or multi-page files (.pdf, .tiff).
+        // iO - iodigital.com: https://assets.iodigital.com/f/119964/1080x1080/406d3c7503/oorlogswond_depodcast_square-1080px.jpg/m/800x800
+        // SupraBazar: https://cdn.suprabazar.be/media/4a/fd/29/1718265877/Verticaal.jpg
         const printedTextSampleURL =
-          "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/printed_text.jpg";
+          "https://cdn.suprabazar.be/media/4a/fd/29/1718265877/Verticaal.jpg";
 
         // Recognize text in printed image from a URL
         console.log(
@@ -57,9 +54,12 @@ function computerVision() {
         printRecText(printedResult);
 
         // Perform read and await the result from URL
-        async function readTextFromURL(client, url) {
+        async function readTextFromURL(
+          client: ComputerVisionClient,
+          url: string
+        ) {
           // To recognize text in a local image, replace client.read() with readTextInStream() as shown:
-          let result = await client.read(url);
+          let result: any = await client.read(url);
           // Operation ID is last path segment of operationLocation (a URL)
           let operation = result.operationLocation.split("/").slice(-1)[0];
 
@@ -73,7 +73,7 @@ function computerVision() {
         }
 
         // Prints all text from Read result
-        function printRecText(readResults) {
+        function printRecText(readResults: any[]) {
           console.log("Recognized text:");
           for (const page in readResults) {
             if (readResults.length > 1) {
@@ -82,7 +82,7 @@ function computerVision() {
             const result = readResults[page];
             if (result.lines.length) {
               for (const line of result.lines) {
-                console.log(line.words.map((w) => w.text).join(" "));
+                console.log(line.words.map((w: any) => w.text).join(" "));
               }
             } else {
               console.log("No recognized text.");
@@ -95,8 +95,11 @@ function computerVision() {
          * Download the specified file in the URL to the current local folder
          *
          */
-        function downloadFilesToLocal(url, localFileName) {
-          return new Promise((resolve, reject) => {
+        function downloadFilesToLocal(
+          url: string,
+          localFileName: fs.PathOrFileDescriptor
+        ) {
+          return new Promise<void>((resolve, reject) => {
             console.log("--- Downloading file to local directory from: " + url);
             const request = https.request(url, (res) => {
               if (res.statusCode !== 200) {
@@ -105,7 +108,7 @@ function computerVision() {
                 );
                 reject();
               }
-              var data = [];
+              var data: any[] = [];
               res.on("data", (chunk) => {
                 data.push(chunk);
               });
@@ -131,7 +134,7 @@ function computerVision() {
         console.log("End of quickstart.");
       },
       function () {
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
           resolve();
         });
       },

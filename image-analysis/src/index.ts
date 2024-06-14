@@ -40,7 +40,7 @@ const features: string[] = [
 // https://used-car-publisher.toyota-europe.com/images/cf8306a2-ffb4-485d-b0a9-eebded8ff0ee_a0670dbbd8c4b7d91bfbb6d3c58415bc.JPG
 // SupraBazar: https://cdn.suprabazar.be/media/4a/fd/29/1718265877/Verticaal.jpg
 const imageUrl: string =
-  "https://used-car-publisher.toyota-europe.com/images/cf8306a2-ffb4-485d-b0a9-eebded8ff0ee_a0670dbbd8c4b7d91bfbb6d3c58415bc.JPG";
+  "https://cdn.suprabazar.be/media/be/29/4c/1714143386/smoby-4-seasons-speelhuis-weerbeleving-102x121x143-cm-31803133.jpg";
 
 async function analyzeImageFromUrl(): Promise<void> {
   const result = await client.path("/imageanalysis:analyze").post({

@@ -40,7 +40,7 @@ function computerVision() {
         // iO - iodigital.com: https://assets.iodigital.com/f/119964/1080x1080/406d3c7503/oorlogswond_depodcast_square-1080px.jpg/m/800x800
         // SupraBazar: https://cdn.suprabazar.be/media/4a/fd/29/1718265877/Verticaal.jpg
         const printedTextSampleURL =
-          "https://cdn.suprabazar.be/media/4a/fd/29/1718265877/Verticaal.jpg";
+          "https://assets.iodigital.com/f/119964/1080x1080/406d3c7503/oorlogswond_depodcast_square-1080px.jpg/m/800x800";
 
         // Recognize text in printed image from a URL
         console.log(

@@ -1,0 +1,21 @@
+{
+  "name": "ocr",
+  "version": "1.0.0",
+  "description": "Optical Character Recognition (OCR) through Azure AI Vision API: GA Read.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timdujardin/azure-ai-vision-poc.git/ocr"
+  },
+  "author": "Tim Dujardin",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/cognitiveservices-computervision": "^8.2.0",
+    "async": "^3.2.5",
+    "dotenv": "^16.4.5",
+    "ms-rest-azure": "^3.0.2"
+  }
+}

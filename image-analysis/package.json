@@ -1,0 +1,19 @@
+{
+  "name": "image-analysis",
+  "version": "1.0.0",
+  "description": "Image Analysis through Azure AI Vision API: Image Analysis.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timdujardin/azure-ai-vision-poc.git/image-analysis"
+  },
+  "author": "Tim Dujardin",
+  "license": "ISC",
+  "dependencies": {
+    "@azure-rest/ai-vision-image-analysis": "^1.0.0-beta.2",
+    "dotenv": "^16.4.5"
+  }
+}

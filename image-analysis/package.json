@@ -4,11 +4,7 @@
   "description": "Image Analysis through Azure AI Vision API: Image Analysis.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/timdujardin/azure-ai-vision-poc.git/image-analysis"
+    "analyse": "node index.js"
   },
   "author": "Tim Dujardin",
   "license": "ISC",
